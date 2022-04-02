@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vanilla JS Based Toast</title>
+  </head>
+  <body>
+    <div class="container">
+      <div id="toastBlockLeft" class="toastBlock toastLeft"></div>
+      <div id="toastBlockRight" class="toastBlock toastRight"></div>
+      <div class="form">
+        <h2>Vanilla JS Based Toast</h2>
+        <p>Visibility Time For Toast (Seconds)</p>
+        <input
+          type="number"
+          placeholder="5"
+          id="visiblityTime"
+          name="visiblityTime"
+        />
+        <p>Position</p>
+        <select aria-placeholder="Toast Position" id="position" name="position">
+          <option value="topL">Top Left</option>
+          <option value="topR">Top Right</option>
+        </select>
+        <p>Type</p>
+        <select aria-placeholder="Type" id="type" name="type">
+          <option value="success">Success</option>
+          <option value="error">Error</option>
+        </select>
+        <br />
+        <br />
+        <button onclick="buttonSubmit()">Get Toast</button>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    const buttonSubmit = () => {
+      buildToast();
+    };
+
+    const buildToast = () => {
+      const toastContainer = document.createElement("div");
+      const toastText = document.createElement("p");
+
+      // close button functionality
+      const closeButton = document.createElement("div");
+      closeButton.innerHTML = "&#10006;";
+      closeButton.className = "closeB";
+      closeButton.onclick = () => {
+        toastContainer.className += " closeToast";
+        setTimeout(() => toastContainer.remove(), 500);
+      };
+      const toastVisibilityTime =
+        document.getElementById("visiblityTime").value;
+      hideToast(toastVisibilityTime, toastContainer);
+
+      toastContainer.appendChild(toastText);
+      toastContainer.appendChild(closeButton);
+      toastContainer.className = "toastContainer";
+
+      addTypeStyle(toastContainer, toastText); // adding style based on toast type on toast container
+      addPositionStyle(toastContainer); // adding style for toast position
+    };
+
+    const hideToast = (time, toastContainer) => {
+      if (time) {
+        setTimeout(() => {
+          toastContainer.remove();
+        }, time * 1000);
+      }
+    };
+
+    const addTypeStyle = (toastContainer, toastText) => {
+      const typeVal = document.getElementById("type").value;
+      if (typeVal === "success") {
+        toastContainer.className = toastContainer.className + " toastSuccess";
+        toastText.innerHTML = "This is a sample Success Toast";
+      } else {
+        toastContainer.className = toastContainer.className + " toastError";
+        toastText.innerHTML = "This is a sample Error Toast";
+      }
+    };
+
+    const addPositionStyle = (toastContainer) => {
+      const toastBlockLeft = document.getElementById("toastBlockLeft");
+      const toastBlockRight = document.getElementById("toastBlockRight");
+
+      const posVal = document.getElementById("position").value;
+      if (posVal === "topL") {
+        toastBlockLeft.appendChild(toastContainer);
+      } else {
+        toastBlockRight.appendChild(toastContainer);
+      }
+    };
+  </script>
+
+  <style>
+    .toastContainer {
+      position: relative;
+      width: 300px;
+      padding: 10px;
+      margin: 5px;
+      color: white;
+      font-size: 20px;
+      animation: fadein 0.5s;
+      -moz-animation: fadein 0.5s; /* Firefox */
+      -webkit-animation: fadein 0.5s; /* Safari and Chrome */
+    }
+    .closeToast {
+      opacity: 0;
+      animation: fadeout 0.5s;
+      -moz-animation: fadeout 0.5s; /* Firefox */
+      -webkit-animation: fadeout 0.5s; /* Safari and Chrome */
+    }
+    .toastSuccess {
+      border: 1px solid rgb(0, 116, 0);
+      background: rgb(0, 116, 0);
+    }
+    .toastError {
+      border: 1px solid red;
+      background: red;
+    }
+    .closeB {
+      position: absolute;
+      color: white;
+      cursor: pointer;
+      top: 5px;
+      right: 10px;
+    }
+    .container {
+      position: relative;
+      margin-top: 100px;
+    }
+    .form {
+      z-index: 0;
+    }
+    .toastBlock {
+      top: 0;
+      position: fixed;
+      z-index: 10;
+    }
+    .toastLeft {
+      left: 0;
+    }
+    .toastRight {
+      right: 0;
+    }
+
+    @keyframes fadein {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @-moz-keyframes fadein {
+      /* Firefox */
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @-webkit-keyframes fadein {
+      /* Safari and Chrome */
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeout {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes fadeout {
+      /* Firefox */
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+    @-webkit-keyframes fadeout {
+      /* Safari and Chrome */
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+  </style>
+</html>
